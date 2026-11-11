@@ -151,7 +151,7 @@ void irtkDemonsRegistration::Initialize(int level)
   }
 
   // Resample images if necessary
-  if (_TargetResolution > 0) {
+  if (_TargetResolution != NULL) {
     cout << "Resampling target ... "; cout.flush();
     // Create resampling filter
     irtkResamplingWithPadding<irtkRealPixel> resample(_TargetResolution[level][0],
@@ -163,7 +163,7 @@ void irtkDemonsRegistration::Initialize(int level)
     resample.Run();
     cout << "done" << endl;
   }
-  if (_SourceResolution > 0) {
+  if (_SourceResolution != NULL) {
     cout << "Resampling source ... "; cout.flush();
     // Create resampling filter
     irtkResamplingWithPadding<irtkRealPixel> resample(_SourceResolution[level][0],

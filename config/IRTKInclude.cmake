@@ -235,3 +235,16 @@ IF (BUILD_CARDIAC)
    LINK_LIBRARIES(cardiac++)
 ENDIF (BUILD_CARDIAC)
 
+
+# macOS/CMake 4 fix: the global LINK_LIBRARIES above make every IRTK library
+# link to itself, which modern CMake rejects. Strip the self-reference.
+macro(add_library _irtk_name)
+  _add_library(${_irtk_name} ${ARGN})
+  foreach(_irtk_prop LINK_LIBRARIES INTERFACE_LINK_LIBRARIES)
+    get_target_property(_irtk_libs ${_irtk_name} ${_irtk_prop})
+    if(_irtk_libs)
+      list(REMOVE_ITEM _irtk_libs ${_irtk_name} "$<LINK_ONLY:${_irtk_name}>")
+      set_target_properties(${_irtk_name} PROPERTIES ${_irtk_prop} "${_irtk_libs}")
+    endif()
+  endforeach()
+endmacro()

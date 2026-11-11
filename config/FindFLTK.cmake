@@ -60,7 +60,7 @@ IF(UNIX)
 ENDIF(UNIX)
 
 IF(APPLE)
-  SET(_FLTK_PLATFORM_DEPENDENT_LIBRARIES "-framework Carbon -framework AGL -framework Cocoa -framework ApplicationServices -lz")
+  SET(_FLTK_PLATFORM_DEPENDENT_LIBRARIES "-framework Carbon -framework Cocoa -framework ApplicationServices -lz")
 ENDIF(APPLE)
 
 IF(CYGWIN)
