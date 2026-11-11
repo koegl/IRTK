@@ -114,3 +114,33 @@ From `build/`:
 ```
 
 `build/` is listed in `.gitignore`, so build output stays out of git.
+
+## 5. Registration tab (new feature in this fork)
+
+Upstream rview has a Registration tab, but it was switched off and written for
+an older registration API that no longer exists. This fork re-enables it and
+rewrites its logic on top of the `registration2` library, the same code that
+`rreg2`, `areg2` and `nreg2` use.
+
+Files changed:
+
+- `packages/rview/fltk/Fl_RViewUI.h`: added `#define HAS_REGISTRATION_PANEL`
+- `packages/rview/fltk/Fl_RView_Registration.h`: new widget and callback declarations
+- `packages/rview/fltk/Fl_RView_Registration.cc`: rewritten
+
+How it behaves:
+
+- **Registration type**: Rigid, Affine or Non-rigid (free-form deformation)
+- **Defaults**: parameters start from the library's `GuessParameter()` for the
+  loaded images, so Start without changes matches the command-line tool run
+  without `-parin`. **Guess** resets them.
+- **Multi-resolution values** (blurring, resolution) are for level 1; each further level doubles them
+- **Similarity measure**: NMI or SSD only. registration2 implements just those two.
+- **Starting estimate**: whatever transformation rview currently shows, so you
+  can run Rigid → Affine → Non-rigid in sequence
+- **ROI**: if a region of interest is set in the viewer, only that part of the target is used
+- **Runs in a background thread**, so the viewer stays usable. Progress is printed in
+  the terminal rview was started from. It cannot be stopped once started.
+- **Result**: written to `$TMPDIR/rview-registration-XXXXXX/<type>_<n>.dof`,
+  loaded, and added to the list on the Transform/Fusion tab. Use Save there to keep it.
+- **Load / Save**: parameter files in the same format as `-parin` / `-parout`

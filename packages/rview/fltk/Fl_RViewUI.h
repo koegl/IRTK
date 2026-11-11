@@ -22,6 +22,7 @@ See COPYRIGHT for details
 #define HAS_TRANSFORMATION_PANEL
 #define HAS_LANDMARK_PANEL
 #define HAS_SEGMENTATION_PANEL
+#define HAS_REGISTRATION_PANEL
 
 // FLTK includes
 #include <FL/Fl.H>

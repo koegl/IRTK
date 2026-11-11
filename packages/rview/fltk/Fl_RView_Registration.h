@@ -14,75 +14,60 @@ See COPYRIGHT for details
 
 =========================================================================*/
 
-private:
+public:
 
 //
-// Members for registration display and manipulation
+// Members for the registration panel. The registration itself runs the
+// registration2 library (the same code as rreg2 / areg2 / nreg2) in a
+// background thread so that the viewer stays responsive.
 //
 
+Fl_Choice *registrationType;
+Fl_Choice *similarityMeasure;
+Fl_Check_Button *level[5];
+Fl_Counter *numberOfBins;
+Fl_Counter *numberOfIterations;
+Fl_Counter *maxStepLength;
+Fl_Counter *minStepLength;
 Fl_Value_Slider *targetBlurring;
-Fl_Value_Slider *sourceBlurring;
 Fl_Value_Slider *targetResolution;
+Fl_Value_Slider *sourceBlurring;
 Fl_Value_Slider *sourceResolution;
 Fl_Value_Slider *targetPadding;
-Fl_Counter *numberOfIterations;
-Fl_Counter *numberOfBins;
-Fl_Counter *numberOfSteps;
-Fl_Counter *lengthOfSteps;
-Fl_Choice  *similarityMeasure;
-Fl_Check_Button *level[5];
-Fl_Return_Button *runRegistration;
+Fl_Value_Slider *controlPointSpacing;
+Fl_Value_Input *bendingEnergy;
+Fl_Button *startRegistrationButton;
+Fl_Button *guessRegistrationButton;
+Fl_Button *loadParameterButton;
+Fl_Button *saveParameterButton;
+Fl_Output *registrationStatus;
+
+/// Registration type menu
+static Fl_Menu_Item menu_registrationType[];
 
 /// Similarity measure menu
 static Fl_Menu_Item menu_similarityMeasure[];
 
-/// Callback for reading paramter
-static void cb_loadParameter(Fl_Menu_Bar*, void*);
+/// Callback for changing the registration type
+static void cb_registrationType(Fl_Widget *, void *);
 
-/// Callback for reading paramter
-static void cb_saveParameter(Fl_Menu_Bar*, void*);
+/// Callback for any parameter widget: copies all widget values into the parameters
+static void cb_registrationParameter(Fl_Widget *, void *);
 
-/// Callback for parameter updates
-static void cb_similarityMeasure(Fl_Widget *, char *) ;
+/// Callback for reading parameters from a file
+static void cb_loadParameter(Fl_Button *, void *);
 
-/// Callback for parameter updates
-static void cb_numberOfBins(Fl_Counter*, void*);
+/// Callback for writing parameters to a file
+static void cb_saveParameter(Fl_Button *, void *);
 
-/// Callback for parameter updates
-static void cb_numberOfIterations(Fl_Counter*, void*);
+/// Callback for starting a registration
+static void cb_startRegistration(Fl_Button *, void *);
 
-/// Callback for parameter updates
-static void cb_numberOfSteps(Fl_Counter*, void*);
+/// Callback for guessing registration parameters from the images
+static void cb_guessRegistrationParameter(Fl_Button *, void *);
 
-/// Callback for parameter updates
-static void cb_lengthOfSteps(Fl_Counter*, void*);
-
-// Callbacks for parameter updates
-static void cb_numberOfLevels(Fl_Button *, char *);
-
-// Callbacks for parameter updates
-static void cb_targetBlurring(Fl_Value_Slider *, void *);
-
-// Callbacks for parameter updates
-static void cb_targetResolution(Fl_Value_Slider *, void *);
-
-/// Callback for registration target intensity padding
-static void cb_targetPadding(Fl_Value_Slider *, void *);
-
-// Callbacks for parameter updates
-static void cb_sourceBlurring(Fl_Value_Slider *, void *);
-
-// Callbacks for parameter updates
-static void cb_sourceResolution(Fl_Value_Slider *, void *);
-
-// Callbacks for registrations
-static void cb_startRegistration(Fl_Button*, void*);
-
-// Callbacks for registrations
-static void cb_stopRegistration(Fl_Button*, void*);
-
-// Callbacks for registrations
-static void cb_guessRegistrationParameter(Fl_Button*, void*);
+/// Timer callback that checks whether a running registration has finished
+static void cb_registrationPoll(void *);
 
 public:
 
@@ -91,4 +76,3 @@ void UpdateRegistrationControlWindow();
 
 /// Initialize the registration control window
 void InitializeRegistrationControlWindow();
-
