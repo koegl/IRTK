@@ -144,3 +144,19 @@ How it behaves:
 - **Result**: written to `$TMPDIR/rview-registration-XXXXXX/<type>_<n>.dof`,
   loaded, and added to the list on the Transform/Fusion tab. Use Save there to keep it.
 - **Load / Save**: parameter files in the same format as `-parin` / `-parout`
+
+Tested: rigid, affine and non-rigid all run and give a visibly correct alignment.
+
+### Chaining rigid → affine → non-rigid
+
+1. Load target and source, choose **Rigid**, press **Start**.
+2. Choose **Affine**, press **Start**. It starts from the rigid result.
+3. Choose **Non-rigid**, press **Start**. It starts from the affine result.
+
+Notes:
+
+- The starting point is the transformation selected on the Transform/Fusion
+  tab. Check that the previous result is highlighted there before pressing Start.
+- Changing the type resets the parameters to that type's defaults, so change
+  the type first, then adjust parameters.
+- Press `m` (checkerboard) or `d` (difference) in the viewer to check the result.
